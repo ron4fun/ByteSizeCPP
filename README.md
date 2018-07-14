@@ -1,6 +1,6 @@
 #ByteSizeCPP#
 
-**`ByteSizeCPP`** is a C+11 implementation of how byte sizes are represented and an easy interface to convert to other forms of representation.
+**`ByteSizeCPP`** is a C++11 library that handles how byte sizes are represented and an easy to use interface to convert to other forms of representation.
 
 **Tested Enviroments:**
      
