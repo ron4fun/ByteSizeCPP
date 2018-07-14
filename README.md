@@ -16,7 +16,7 @@ Example
 
     int main()
     {
-        ByteSize b1 = ByteSize::FromBits(1200);
+		ByteSize b1 = ByteSize::FromBits(1200);
 		ByteSize b2 = ByteSize::FromBytes(1200)
 
 		ByteSize b3 = b1 + b2;
@@ -25,11 +25,11 @@ Example
 
 		b4 = ByteSize::Parse("13.5MB")
 
-        bool check = b3.CompareTo(b4);
+		bool check = b3.CompareTo(b4);
         
 		cout << b3.ToString("%d mb") << " " << b3.ToString("%.5f GB") << endl;
 
-        return 0;
+		return 0;
     }
 
  **Unit Tests:**
