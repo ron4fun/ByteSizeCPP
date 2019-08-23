@@ -9,28 +9,30 @@
 Example
 ---------
 
-    #include "ByteSize.h"
-	#include <iostream>
+```c++
+#include "ByteSize.h"
+#include <iostream>
 
-	using namespace std;
+using namespace std;
 
-    int main()
-    {
-		ByteSize b1 = ByteSize::FromBits(1200);
-		ByteSize b2 = ByteSize::FromBytes(1200)
+int main()
+{
+	ByteSize b1 = ByteSize::FromBits(1200);
+	ByteSize b2 = ByteSize::FromBytes(1200)
 
-		ByteSize b3 = b1 + b2;
-		
-		b3.AddMegaBytes(10.04);
+	ByteSize b3 = b1 + b2;
+	
+	b3.AddMegaBytes(10.04);
 
-		b4 = ByteSize::Parse("13.5MB")
+	b4 = ByteSize::Parse("13.5MB")
 
-		bool check = b3.CompareTo(b4);
-        
-		cout << b3.ToString("%d mb") << " " << b3.ToString("%.5f GB") << endl;
+	bool check = b3.CompareTo(b4);
+    
+	cout << b3.ToString("%d mb") << " " << b3.ToString("%.5f GB") << endl;
 
-		return 0;
-    }
+	return 0;
+}
+```
 
  **Unit Tests:**
 
