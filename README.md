@@ -1,10 +1,64 @@
 #ByteSizeCPP#
 
-**`ByteSizeCPP`** is a C++11 library that handles how byte sizes are represented and an easy to use interface to convert to other forms of representation.
+**`ByteSizeCPP`** is a C++11 library that handles how byte sizes are represented while adopting the `International Electrotechnical Commission` ([IEC](https://en.wikipedia.org/wiki/Byte)) proposed standards (kibi, mebi, gibi etc.) and also providing an easy to use interface for conversion from one form of representation to the other.
 
-**Tested Enviroments:**
-     
-    Visual Studio 2015.
+###**The `ToString` Function**
+
+There are two functions that can help you convert ByteSize objects to string:
+	
+	> ToString(ByteSizeUnit unit_repr = BinaryUnit, int decimal_place = 2)
+	> ToString(string unit, int decimal_place = 2)
+	
+Both functions throw the `FormatException` if the `decimal_place` is a negetive value. Also, if the input string `unit` is incorrectly 
+formatted. 
+
+	
+	Where:
+		ByteSizeUnit representation is an enum { BinaryUnit, DecimalUnit }
+		also,
+		decimal_place > 0, returns a decimal value 
+		decimal_place == 0, returns a non decimal value
+		decimal_place < 0, throws the `FormatException`
+
+
+###**The `Parse` and `TryParse` Function**
+	
+These are two static functions for parsing of input string to ByteSize objects:
+
+	> ByteSize Parse(string s);
+	
+Throws the `FormatException` if input string is incorrectly formated.
+
+	> bool TryParse(string s, ByteSize &bs)
+	  
+Returns false if input string is incorrectly formated and true 
+if good and stores the newly created ByteSize object in `bs`, 
+which is passed by reference to the function.
+
+
+###**All The Acceptable Input String Unit Formats**
+ 
+	
+Here are all the acceptable input string `unit` formats:
+
+	"b" => Bit
+	"B" => Byte 
+	"KiB" => KibiByte 
+	"KB" => KiloByte
+	"MiB" => MebiByte 
+	"MB" => MegaByte
+	"GiB" => GibiByte 
+	"GB" => GigaByte
+	"TiB" => TebiByte
+	"TB" => TeraByte
+	"PiB" => PebiByte 
+	"PB" => PetaByte
+	"EiB" => ExbiByte
+	"EB" => ExaByte
+	
+All symbols between parenthesis are good. Also, be careful about the 
+	  case-sentivity when it comes to `b` and `B`.
+
 
 Example
 ---------
@@ -18,29 +72,36 @@ using namespace std;
 int main()
 {
 	ByteSize b1 = ByteSize::FromBits(1200);
-	ByteSize b2 = ByteSize::FromBytes(1200)
+	ByteSize b2 = ByteSize::FromBytes(1200);
 
 	ByteSize b3 = b1 + b2;
-	
-	b3.AddMegaBytes(10.04);
 
-	b4 = ByteSize::Parse("13.5MB")
+	ByteSize b4 = b3.AddMebiBytes(10.04);
 
-	bool check = b3.CompareTo(b4);
-    
-	cout << b3.ToString("%d mb") << " " << b3.ToString("%.5f GB") << endl;
+	ByteSize b5 = ByteSize::Parse("13.5MiB");
+
+	int check = b4.CompareTo(b5); // -1
+
+	cout << b4.ToString("mb", 0) << endl; // 11 MB
+	cout << b5.ToString("GB", 5) << endl; // 0.01416 GB
 
 	return 0;
 }
 ```
 
+**Tested Enviroments:**
+     
+    Visual Studio 2019.
+
+
  **Unit Tests:**
 
-To run the unit tests, you should have [boost library](http://www.boost.org/) installed in your workstation.
-    
+To run the unit tests, you should have [boost library](http://www.boost.org/) installed in your workstation. 
+You can also follow this [guide](https://tomkoos.github.io/cpp/boost-vs.html) to help install `boost` library properly on your computer.
+ 
 License
 ----------
-    Copyright (c) 2018 Mbadiwe Nnaemeka Ronald ron2tele@gmail.com
+    Copyright (c) 2018 - 2022 Mbadiwe Nnaemeka Ronald ron2tele@gmail.com
 
     This software is provided 'as-is', without any express or implied
     warranty. In no event will the author be held liable for any damages
