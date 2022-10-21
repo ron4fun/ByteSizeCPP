@@ -28,11 +28,11 @@ These are two static functions for parsing of input string to ByteSize objects:
 
 	> ByteSize Parse(string s);
 	
-Throws the `FormatException` if input string is incorrectly formated.
+Throws the `FormatException` if input string is incorrectly formatted.
 
 	> bool TryParse(string s, ByteSize &bs)
 	  
-Returns false if input string is incorrectly formated and true 
+Returns false if input string is incorrectly formatted and true 
 if good and stores the newly created ByteSize object in `bs`, 
 which is passed by reference to the function.
 
