@@ -5,6 +5,3 @@
 #include "Unitest\CreatingMethodsTest.h"
 #include "Unitest\ParsingMethodsTest.h"
 #include "Unitest\ToStringMethodTest.h"
-
-
-

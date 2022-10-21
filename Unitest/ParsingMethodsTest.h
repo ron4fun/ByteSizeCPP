@@ -79,10 +79,28 @@ BOOST_AUTO_TEST_CASE(ParseBytes)
 	BOOST_CHECK(expected == result);
 }
 
+BOOST_AUTO_TEST_CASE(ParseKiB)
+{
+	string val = "1020KiB";
+	ByteSize expected = ByteSize::FromKibiBytes(1020);
+	ByteSize result = ByteSize::Parse(val);
+
+	BOOST_CHECK(expected == result);
+}
+
 BOOST_AUTO_TEST_CASE(ParseKB)
 {
 	string val = "1020KB";
 	ByteSize expected = ByteSize::FromKiloBytes(1020);
+	ByteSize result = ByteSize::Parse(val);
+
+	BOOST_CHECK(expected == result);
+}
+
+BOOST_AUTO_TEST_CASE(ParseMiB)
+{
+	string val = "1000MiB";
+	ByteSize expected = ByteSize::FromMebiBytes(1000);
 	ByteSize result = ByteSize::Parse(val);
 
 	BOOST_CHECK(expected == result);
@@ -97,6 +115,15 @@ BOOST_AUTO_TEST_CASE(ParseMB)
 	BOOST_CHECK(expected == result);
 }
 
+BOOST_AUTO_TEST_CASE(ParseGiB)
+{
+	string val = "805GiB";
+	ByteSize expected = ByteSize::FromGibiBytes(805);
+	ByteSize result = ByteSize::Parse(val);
+
+	BOOST_CHECK(expected == result);
+}
+
 BOOST_AUTO_TEST_CASE(ParseGB)
 {
 	string val = "805GB";
@@ -106,10 +133,28 @@ BOOST_AUTO_TEST_CASE(ParseGB)
 	BOOST_CHECK(expected == result);
 }
 
+BOOST_AUTO_TEST_CASE(ParseTiB)
+{
+	string val = "100TiB";
+	ByteSize expected = ByteSize::FromTebiBytes(100);
+	ByteSize result = ByteSize::Parse(val);
+
+	BOOST_CHECK(expected == result);
+}
+
 BOOST_AUTO_TEST_CASE(ParseTB)
 {
 	string val = "100TB";
 	ByteSize expected = ByteSize::FromTeraBytes(100);
+	ByteSize result = ByteSize::Parse(val);
+
+	BOOST_CHECK(expected == result);
+}
+
+BOOST_AUTO_TEST_CASE(ParsePiB)
+{
+	string val = "100PiB";
+	ByteSize expected = ByteSize::FromPebiBytes(100);
 	ByteSize result = ByteSize::Parse(val);
 
 	BOOST_CHECK(expected == result);

@@ -2,6 +2,18 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include "../ByteSize.h"
+#include <iomanip>
+
+// Exactly thesame function used by ByteSize objects internally to
+// resolve decimal precision error that may occur.
+double ResolveDecimalPrecision(const double n, const int decimal_place = 9)
+{
+	ostringstream ss;
+	ss.setf(ios::fixed, ios::floatfield);
+	ss.precision(decimal_place);
+	ss << n;
+	return (double)atof(ss.str().c_str());
+}
 
 
 BOOST_AUTO_TEST_SUITE(CreatingMethodsTest)
@@ -26,11 +38,23 @@ BOOST_AUTO_TEST_CASE(Constructor)
 	// Assert
 	BOOST_CHECK(d0 == result.GetBits());
 	BOOST_CHECK(byteSize == result.GetBytes());
-	BOOST_CHECK(d1 == result.GetKiloBytes());
-	BOOST_CHECK(d2 == result.GetMegaBytes());
-	BOOST_CHECK(d3 == result.GetGigaBytes());
-	BOOST_CHECK(d4 == result.GetTeraBytes());
-	BOOST_CHECK(double(1) == result.GetPetaBytes());
+	BOOST_CHECK(d1 == result.GetKibiBytes());
+	BOOST_CHECK(d2 == result.GetMebiBytes());
+	BOOST_CHECK(d3 == result.GetGibiBytes());
+	BOOST_CHECK(d4 == result.GetTebiBytes());
+	BOOST_CHECK(double(1) == result.GetPebiBytes());
+
+	double d5 = byteSize / 1000;
+	double d6 = ResolveDecimalPrecision(byteSize / 1000 / 1000);
+	double d7 = ResolveDecimalPrecision(byteSize / 1000 / 1000 / 1000);
+	double d8 = ResolveDecimalPrecision(byteSize / 1000 / 1000 / 1000 / 1000);
+	double d9 = ResolveDecimalPrecision(byteSize / 1000 / 1000 / 1000 / 1000 / 1000);
+
+	BOOST_CHECK(d5 == result.GetKiloBytes());
+	BOOST_CHECK(d6 == result.GetMegaBytes());
+	BOOST_CHECK(d7 == result.GetGigaBytes());
+	BOOST_CHECK(d8 == result.GetTeraBytes());
+	BOOST_CHECK(d9 == result.GetPetaBytes());
 }
 
 BOOST_AUTO_TEST_CASE(FromBitsMethod)
@@ -56,14 +80,34 @@ BOOST_AUTO_TEST_CASE(FromBytesMethod)
 	BOOST_CHECK(d0 == result.GetBytes());
 }
 
+BOOST_AUTO_TEST_CASE(FromKibiBytesMethod)
+{
+	// Act
+	ByteSize result = ByteSize::FromKibiBytes(val);
+
+	// Assert
+	BOOST_CHECK(1536 == result.GetBytes());
+	BOOST_CHECK(d0 == result.GetKibiBytes());
+}
+
 BOOST_AUTO_TEST_CASE(FromKiloBytesMethod)
 {
 	// Act
 	ByteSize result = ByteSize::FromKiloBytes(val);
 
 	// Assert
-	BOOST_CHECK(1536 == result.GetBytes());
+	BOOST_CHECK(1500 == result.GetBytes());
 	BOOST_CHECK(d0 == result.GetKiloBytes());
+}
+
+BOOST_AUTO_TEST_CASE(FromMebiBytesMethod)
+{
+	// Act
+	ByteSize result = ByteSize::FromMebiBytes(val);
+
+	// Assert
+	BOOST_CHECK(1572864 == result.GetBytes());
+	BOOST_CHECK(d0 == result.GetMebiBytes());
 }
 
 BOOST_AUTO_TEST_CASE(FromMegaBytesMethod)
@@ -72,8 +116,18 @@ BOOST_AUTO_TEST_CASE(FromMegaBytesMethod)
 	ByteSize result = ByteSize::FromMegaBytes(val);
 
 	// Assert
-	BOOST_CHECK(1572864 == result.GetBytes());
+	BOOST_CHECK(1500000 == result.GetBytes());
 	BOOST_CHECK(d0 == result.GetMegaBytes());
+}
+
+BOOST_AUTO_TEST_CASE(FromGibiBytesMethod)
+{
+	// Act
+	ByteSize result = ByteSize::FromGibiBytes(val);
+
+	// Assert
+	BOOST_CHECK(1610612736 == result.GetBytes());
+	BOOST_CHECK(d0 == result.GetGibiBytes());
 }
 
 BOOST_AUTO_TEST_CASE(FromGigaBytesMethod)
@@ -82,8 +136,18 @@ BOOST_AUTO_TEST_CASE(FromGigaBytesMethod)
 	ByteSize result = ByteSize::FromGigaBytes(val);
 
 	// Assert
-	BOOST_CHECK(1610612736 == result.GetBytes());
+	BOOST_CHECK(1500000000 == result.GetBytes());
 	BOOST_CHECK(d0 == result.GetGigaBytes());
+}
+
+BOOST_AUTO_TEST_CASE(FromTebiBytesMethod)
+{
+	// Act
+	ByteSize result = ByteSize::FromTebiBytes(val);
+
+	// Assert
+	BOOST_CHECK(1649267441664 == result.GetBytes());
+	BOOST_CHECK(d0 == result.GetTebiBytes());
 }
 
 BOOST_AUTO_TEST_CASE(FromTeraBytesMethod)
@@ -92,8 +156,18 @@ BOOST_AUTO_TEST_CASE(FromTeraBytesMethod)
 	ByteSize result = ByteSize::FromTeraBytes(val);
 
 	// Assert
-	BOOST_CHECK(1649267441664 == result.GetBytes());
+	BOOST_CHECK(1500000000000 == result.GetBytes());
 	BOOST_CHECK(d0 == result.GetTeraBytes());
+}
+
+BOOST_AUTO_TEST_CASE(FromPebiBytesMethod)
+{
+	// Act
+	ByteSize result = ByteSize::FromPebiBytes(val);
+
+	// Assert
+	BOOST_CHECK(1688849860263936 == result.GetBytes());
+	BOOST_CHECK(d0 == result.GetPebiBytes());
 }
 
 BOOST_AUTO_TEST_CASE(FromPetaBytesMethod)
@@ -102,7 +176,7 @@ BOOST_AUTO_TEST_CASE(FromPetaBytesMethod)
 	ByteSize result = ByteSize::FromPetaBytes(val);
 
 	// Assert
-	BOOST_CHECK(1688849860263936 == result.GetBytes());
+	BOOST_CHECK(1500000000000000 == result.GetBytes());
 	BOOST_CHECK(d0 == result.GetPetaBytes());
 }
 
