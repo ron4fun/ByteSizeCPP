@@ -1,4 +1,4 @@
-ByteSizeCPP
+ByteSizeCPP [![License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ron4fun/ByteSizeCPP/blob/master/LICENSE)
 ====
 
 **`ByteSizeCPP`** is a C++11 library that handles how byte sizes are represented while adopting the `International Electrotechnical Commission` ([IEC](https://en.wikipedia.org/wiki/Byte)) proposed standards (kibi, mebi, gibi etc.) and also providing an easy to use interface for conversion from one form of representation to the other.
