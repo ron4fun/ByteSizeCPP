@@ -1,25 +1,25 @@
 ByteSizeCPP [![License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ron4fun/ByteSizeCPP/blob/master/LICENSE)
 ====
 
-**`ByteSizeCPP`** is a C++11 library that handles how byte sizes are represented while adopting the `International Electrotechnical Commission` ([IEC](https://en.wikipedia.org/wiki/Byte)) proposed standards (kibi, mebi, gibi etc.) and also providing an easy to use interface for conversion from one form of representation to the other.
+**`ByteSizeCPP`** is a C++11 library that handles how byte sizes are represented while adopting the `International Electrotechnical Commission` ([IEC](https://en.wikipedia.org/wiki/Byte)) proposed standard (kibi, mebi, gibi etc.) and also providing an easy to use interface for conversion from one form of representation to the other.
 
 ### **The `ToString` Function**
 
 There are two functions that can help you convert ByteSize objects to string:
 	
-	> ToString(ByteSizeUnit unit_repr = BinaryUnit, int decimal_place = 2)
-	> ToString(string unit, int decimal_place = 2)
+	> ToString(ByteSizeUnit unit_repr = BinaryUnit, int precision = 2)
+	> ToString(string unit, int precision = 2)
 	
-Both functions throw the `FormatException` if the `decimal_place` is a negetive value. Also, if the input string `unit` is incorrectly 
+Both functions throw the `FormatException` if the `precision` is a negetive value. Also, if the input string `unit` is incorrectly 
 formatted. 
 
 	
 	Where:
 		ByteSizeUnit representation is an enum { BinaryUnit, DecimalUnit }
 		also,
-		decimal_place > 0, returns a decimal value 
-		decimal_place == 0, returns a non decimal value
-		decimal_place < 0, throws the `FormatException`
+		precision > 0, returns a decimal value 
+		precision == 0, returns a non decimal value
+		precision < 0, throws the `FormatException`
 
 
 ### **The `Parse` and `TryParse` Function**
@@ -72,21 +72,21 @@ using namespace std;
 
 int main()
 {
-	ByteSize b1 = ByteSize::FromBits(1200);
-	ByteSize b2 = ByteSize::FromBytes(1200);
+  ByteSize b1 = ByteSize::FromBits(1200);
+  ByteSize b2 = ByteSize::FromBytes(1200);
 
-	ByteSize b3 = b1 + b2;
+  ByteSize b3 = b1 + b2;
 
-	ByteSize b4 = b3.AddMebiBytes(10.04);
+  ByteSize b4 = b3.AddMebiBytes(10.04);
 
-	ByteSize b5 = ByteSize::Parse("13.5MiB");
+  ByteSize b5 = ByteSize::Parse("13.5MiB");
 
-	int check = b4.CompareTo(b5); // -1
+  int check = b4.CompareTo(b5); // -1
 
-	cout << b4.ToString("mb", 0) << endl; // 11 MB
-	cout << b5.ToString("GB", 5) << endl; // 0.01416 GB
+  cout << b4.ToString("mb", 0) << endl; // 11 MB
+  cout << b5.ToString("GB", 5) << endl; // 0.01416 GB
 
-	return 0;
+  return 0;
 }
 ```
 
