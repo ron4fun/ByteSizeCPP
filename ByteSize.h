@@ -360,49 +360,49 @@ public:
 		return *this;
 	}
 
-	string ToString(ByteSizeUnit unit_repr = ByteSizeUnit::BinaryUnit, int decimal_place = 2) const
+	string ToString(ByteSizeUnit unit_repr = ByteSizeUnit::BinaryUnit, int precision = 2) const
 	{
 		if (unit_repr == ByteSizeUnit::BinaryUnit) 
 			return Output(
 				LargestWholeNumberValue(true, unit_repr),
 				LargestWholeNumberSymbol(true, unit_repr), 
-				decimal_place);
+				precision);
 		else if (unit_repr == ByteSizeUnit::DecimalUnit) 
 			return Output(
 				LargestWholeNumberValue(true, unit_repr),
 				LargestWholeNumberSymbol(true, unit_repr), 
-				decimal_place);
+				precision);
 		else throw FormatException("Byte size unit is not in the correct format");
 	}
 
-	string ToString(string unit, int decimal_place = 2) const
+	string ToString(string unit, int precision = 2) const
 	{
-		if (decimal_place < 0) throw FormatException("Decimal place cannot be negative");
+		if (precision < 0) throw FormatException("Precision cannot be negative");
 
 		unit = StripAllWhiteSpace(unit, true);
 
-		if (unit.empty()) return Output(LargestWholeNumberValue(), LargestWholeNumberSymbol(), decimal_place);
+		if (unit.empty()) return Output(LargestWholeNumberValue(), LargestWholeNumberSymbol(), precision);
 		if (unit.size() != 1) {
-			if (Has(unit, "PiB")) return Output(PebiBytes, "PiB", decimal_place);
-			else if (Has(unit, "PB")) return Output(PetaBytes, "PB", decimal_place);
-			else if (Has(unit, "TiB")) return Output(TebiBytes, "TiB", decimal_place);
-			else if (Has(unit, "TB")) return Output(TeraBytes, "TB", decimal_place);
-			else if (Has(unit, "GiB")) return Output(GibiBytes, "GiB", decimal_place);
-			else if (Has(unit, "GB")) return Output(GigaBytes, "GB", decimal_place);
-			else if (Has(unit, "MiB")) return Output(MebiBytes, "MiB", decimal_place);
-			else if (Has(unit, "MB")) return Output(MegaBytes, "MB", decimal_place);
-			else if (Has(unit, "KiB")) return Output(KibiBytes, "KiB", decimal_place);
-			else if (Has(unit, "KB")) return Output(KiloBytes, "KB", decimal_place);
+			if (EqualsIgnoreCase(unit, "PiB")) return Output(PebiBytes, "PiB", precision);
+			else if (EqualsIgnoreCase(unit, "PB")) return Output(PetaBytes, "PB", precision);
+			else if (EqualsIgnoreCase(unit, "TiB")) return Output(TebiBytes, "TiB", precision);
+			else if (EqualsIgnoreCase(unit, "TB")) return Output(TeraBytes, "TB", precision);
+			else if (EqualsIgnoreCase(unit, "GiB")) return Output(GibiBytes, "GiB", precision);
+			else if (EqualsIgnoreCase(unit, "GB")) return Output(GigaBytes, "GB", precision);
+			else if (EqualsIgnoreCase(unit, "MiB")) return Output(MebiBytes, "MiB", precision);
+			else if (EqualsIgnoreCase(unit, "MB")) return Output(MegaBytes, "MB", precision);
+			else if (EqualsIgnoreCase(unit, "KiB")) return Output(KibiBytes, "KiB", precision);
+			else if (EqualsIgnoreCase(unit, "KB")) return Output(KiloBytes, "KB", precision);
 		}
 		else {
 			// Byte and Bit symbol must be case-sensitive
-			if (IndexOf(ByteSymbol, unit, true) != -1) return Output(double(Bytes), "B", decimal_place);
-			else if (IndexOf(BitSymbol, unit, true) != -1) return Output(double(Bits), "b", decimal_place);
+			if (IndexOf(ByteSymbol, unit, true) != -1) return Output(double(Bytes), "B", precision);
+			else if (IndexOf(BitSymbol, unit, true) != -1) return Output(double(Bits), "b", precision);
 		}
 		
 		throw FormatException("Byte size unit is not in the correct format");	
 	}
-
+	
 	static ByteSize Parse(const string &s)
 	{
 		ByteSize bs(0);
@@ -459,12 +459,12 @@ public:
 		tempInt = -1;
 		for (register size_t i = 0; i < mags.size(); i++)
 		{
-			if (i > 1 && Has(mags[i], sizePart.c_str()))
+			if (i > 1 && EqualsIgnoreCase(mags[i], sizePart.c_str()))
 			{
 				tempInt = int(i);
 				break;
 			}
-			else if (strcmp(sizePart.c_str(), mags[i]) == 0) // sensitive comparison for b and B symbols
+			else if (sizePart == mags[i]) // sensitive comparison for b and B symbols
 			{
 				tempInt = int(i);
 				break;
@@ -528,7 +528,7 @@ public:
 	}
 
 private:
-	static string upper(const string &s)
+	static string ToUpper(const string &s)
 	{
 		string temp;
 		temp.resize(s.size());
@@ -537,12 +537,12 @@ private:
 
 		return temp;
 	}
-
-	static bool Has(const string &sub_str, const string &str)
-	{
-		return _stricmp(sub_str.c_str(), str.c_str()) == 0; // insensitive comparison
-	}
 		
+	static bool EqualsIgnoreCase(const string& a, const string& b) 
+	{
+		return _stricmp(a.c_str(), b.c_str()) == 0; // insensitive comparison
+	}
+
 	static bool Contains(const char InChar, const string &InString)
 	{
 		for (register size_t i = 0; i < InString.size(); i++)
@@ -594,8 +594,8 @@ private:
 		// returns an integer
 		if (caseSensitive) return (int)Str.find(SubStr);
 
-		string _Str = upper(Str);
-		string _SubStr = upper(SubStr);
+		string _Str = ToUpper(Str);
+		string _SubStr = ToUpper(SubStr);
 		return (int)_Str.find(_SubStr);
 	}
 		
@@ -632,21 +632,21 @@ private:
 		return count;
 	}
 
-	static string Output(const double n, const string &unit, const int decimal_place)
+	static string Output(const double n, const string &unit, const int precision)
 	{
 		ostringstream ss;
 		ss.setf(ios::fixed, ios::floatfield);
-		ss.precision(decimal_place);
+		ss.precision(precision);
 		ss << n;
 		ss << " " << unit;
 		return ss.str();		
 	}
 
-	static double ResolveDecimalPrecision(const double n, const int decimal_place = 9)
+	static double ResolveDecimalPrecision(const double n, const int precision = 9)
 	{
 		ostringstream ss;
 		ss.setf(ios::fixed, ios::floatfield);
-		ss.precision(decimal_place);
+		ss.precision(precision);
 		ss << n;
 		return (double)atof(ss.str().c_str());
 	}
