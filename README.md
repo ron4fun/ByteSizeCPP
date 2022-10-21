@@ -1,8 +1,9 @@
-#ByteSizeCPP#
+ByteSizeCPP
+====
 
 **`ByteSizeCPP`** is a C++11 library that handles how byte sizes are represented while adopting the `International Electrotechnical Commission` ([IEC](https://en.wikipedia.org/wiki/Byte)) proposed standards (kibi, mebi, gibi etc.) and also providing an easy to use interface for conversion from one form of representation to the other.
 
-###**The `ToString` Function**
+### **The `ToString` Function**
 
 There are two functions that can help you convert ByteSize objects to string:
 	
@@ -21,7 +22,7 @@ formatted.
 		decimal_place < 0, throws the `FormatException`
 
 
-###**The `Parse` and `TryParse` Function**
+### **The `Parse` and `TryParse` Function**
 	
 These are two static functions for parsing of input string to ByteSize objects:
 
@@ -36,7 +37,7 @@ if good and stores the newly created ByteSize object in `bs`,
 which is passed by reference to the function.
 
 
-###**All The Acceptable Input String Unit Formats**
+### **All The Acceptable Input String Unit Formats**
  
 	
 Here are all the acceptable input string `unit` formats:
