@@ -56,11 +56,11 @@ BOOST_AUTO_TEST_CASE(Constructor)
 	double d8 = ResolveDecimalPrecision(byteSize / 1000 / 1000 / 1000 / 1000);
 	double d9 = ResolveDecimalPrecision(byteSize / 1000 / 1000 / 1000 / 1000 / 1000);
 
-	BOOST_CHECK(d5 == result.GetKiloBytes());
-	BOOST_CHECK(d6 == result.GetMegaBytes());
-	BOOST_CHECK(d7 == result.GetGigaBytes());
-	BOOST_CHECK(d8 == result.GetTeraBytes());
-	BOOST_CHECK(d9 == result.GetPetaBytes());
+	BOOST_CHECK(d5 == ResolveDecimalPrecision(result.GetKiloBytes()));
+	BOOST_CHECK(d6 == ResolveDecimalPrecision(result.GetMegaBytes()));
+	BOOST_CHECK(d7 == ResolveDecimalPrecision(result.GetGigaBytes()));
+	BOOST_CHECK(d8 == ResolveDecimalPrecision(result.GetTeraBytes()));
+	BOOST_CHECK(d9 == ResolveDecimalPrecision(result.GetPetaBytes()));
 }
 
 BOOST_AUTO_TEST_CASE(FromBitsMethod)
