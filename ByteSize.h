@@ -826,18 +826,18 @@ ByteSize::ByteSize(const double byteSize)
 	// Get Truncation because bits are whole units
 	Bits = int64_t(tempDouble);
 	Bytes = byteSize;
-	KibiBytes = ResolveDecimalPrecision(byteSize / BytesInKibiByte);
-	MebiBytes = ResolveDecimalPrecision(byteSize / BytesInMebiByte);
-	GibiBytes = ResolveDecimalPrecision(byteSize / BytesInGibiByte);
-	TebiBytes = ResolveDecimalPrecision(byteSize / BytesInTebiByte);
-	PebiBytes = ResolveDecimalPrecision(byteSize / BytesInPebiByte);
+	KibiBytes = byteSize / BytesInKibiByte;
+	MebiBytes = byteSize / BytesInMebiByte;
+	GibiBytes = byteSize / BytesInGibiByte;
+	TebiBytes = byteSize / BytesInTebiByte;
+	PebiBytes = byteSize / BytesInPebiByte;
 
 	// Decimal Units
-	KiloBytes = ResolveDecimalPrecision(byteSize / BytesInKiloByte);
-	MegaBytes = ResolveDecimalPrecision(byteSize / BytesInMegaByte);
-	GigaBytes = ResolveDecimalPrecision(byteSize / BytesInGigaByte);
-	TeraBytes = ResolveDecimalPrecision(byteSize / BytesInTeraByte);
-	PetaBytes = ResolveDecimalPrecision(byteSize / BytesInPetaByte);
+	KiloBytes = byteSize / BytesInKiloByte;
+	MegaBytes = byteSize / BytesInMegaByte;
+	GigaBytes = byteSize / BytesInGigaByte;
+	TeraBytes = byteSize / BytesInTeraByte;
+	PetaBytes = byteSize / BytesInPetaByte;
 }
 
 ostream &operator<<(ostream &output, const ByteSize &value)
