@@ -6,12 +6,18 @@
 
 // Exactly thesame function used by ByteSize objects internally to
 // resolve decimal precision error that may occur.
-double ResolveDecimalPrecision(const double n, const int decimal_place = 9)
+double ResolveDecimalPrecision(const double n, const int precision = 9)
 {
+	double integer_part, decimal_part;
+
 	ostringstream ss;
 	ss.setf(ios::fixed, ios::floatfield);
-	ss.precision(decimal_place);
-	ss << n;
+	ss.precision(precision);
+
+	decimal_part = modf(n, &integer_part);
+	if (decimal_part == 0) ss << (int)n;
+	else ss << n;
+
 	return (double)atof(ss.str().c_str());
 }
 

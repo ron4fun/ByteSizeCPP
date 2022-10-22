@@ -3,22 +3,28 @@
 #include <boost/test/included/unit_test.hpp>
 #include "../ByteSize.h"
 #include <iomanip>
+#include <math.h>
 
 // Exactly thesame function used by ByteSize objects internally to
 // resolve decimal precision error that may occur.
-string ResolveOutput(const double n, const string &unit, const int decimal_place = 2)
+string ResolveOutput(const double n, const string &unit, const int precision = 2)
 {
+	double integer_part, decimal_part;
+
 	ostringstream ss;
 	ss.setf(ios::fixed, ios::floatfield);
-	ss.precision(decimal_place);
-	ss << n;
+	ss.precision(precision);
+
+	decimal_part = modf(n, &integer_part);
+	if (decimal_part == 0) ss << (int)n;
+	else ss << n;
 	ss << " " << unit;
 	return ss.str();
 }
 
 BOOST_AUTO_TEST_SUITE(ToStringMethodTest)
 
-BOOST_AUTO_TEST_CASE(ReturnsLargestMetricSuffix)
+BOOST_AUTO_TEST_CASE(ReturnsLargestMetricSuffixInBinaryUnit)
 {
 	double lDouble = 10.5;
 
@@ -30,6 +36,20 @@ BOOST_AUTO_TEST_CASE(ReturnsLargestMetricSuffix)
 
 	// Assert
 	BOOST_CHECK(ResolveOutput(lDouble, "KiB") == result);
+}
+
+BOOST_AUTO_TEST_CASE(ReturnsLargestMetricSuffixInDecimalUnit)
+{
+	double lDouble = 10;
+
+	// Arrange
+	ByteSize b = ByteSize::FromKiloBytes(10);
+
+	// Act
+	string result = b.ToString(DecimalUnit);
+
+	// Assert
+	BOOST_CHECK(ResolveOutput(lDouble, "KB") == result);
 }
 
 BOOST_AUTO_TEST_CASE(ReturnsDefaultNumberFormat)
