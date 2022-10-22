@@ -29,6 +29,7 @@ misrepresented as being the original software.
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include <math.h>
 
 using namespace std;
 
@@ -557,7 +558,8 @@ private:
 	{
 		string temp = "";
 		
-		if (sides)
+		if (txt.empty()) return "";
+		else if (sides)
 		{
 			size_t index1 = 0;
 			while (txt[index1] == ' ') index1++;
@@ -634,10 +636,15 @@ private:
 
 	static string Output(const double n, const string &unit, const int precision)
 	{
+		double integer_part, decimal_part;
+
 		ostringstream ss;
 		ss.setf(ios::fixed, ios::floatfield);
 		ss.precision(precision);
-		ss << n;
+		
+		decimal_part = modf(n, &integer_part);
+		if (decimal_part == 0) ss << (int)n;
+		else ss << n;
 		ss << " " << unit;
 		return ss.str();		
 	}
